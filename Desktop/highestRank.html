@@ -24,43 +24,76 @@
 				}
 			}
 		}
+    this.shuffleFast = function() {
+      var m = this.cards.length, t, rand;
+
+      while (m > 0) {
+        rand = Math.floor(Math.random() * m--);
+
+        t = this.cards[m];
+        this.cards[m] = this.cards[rand];
+        this.cards[rand] = t;
+      }
+    }
 	}
 
-	function Player(name) {
-		this.name = name;
-	}
+  function Player(name) {
+    this.name = name;
+  }
 
-	var player1 = new Player("Matthew");
-	var player2 = new Player("Computer");
+  var player1 = new Player("Matthew");
+  var player2 = new Player("Computer");
 
-	console.log("The highest rank wins!");
+  console.log("The highest rank wins!");
 
-	function PlayGame() {
-			for(i = 1; i <= 10; i++) {
-				playingDeck = new Deck();
-				playingDeck.init();
-				player1 = dealCards();
-				player2 = dealCards();
+  function PlayGame() {
+      for(i = 1; i <= 10; i++) {
+        playingDeck = new Deck();
+        playingDeck.init();
+        playingDeck.shuffleFast();
+        player1 = dealCards();
+        player2 = dealCards();
+        queueDeck = new Deck();
+        
 
-				console.log("Matthew's draw: " + player1.show());
-				console.log("Computer's draw: " + player2.show());
+        console.log("Matthew's draw: " + player1.show());
+        console.log("Computer's draw: " + player2.show());
 
-				function dealCards() {
-					var index = Math.floor(Math.random() * playingDeck.cards.length)
-					var playingCard = playingDeck.cards[index];
-					return playingCard;
-				}
+        
+        function dealCards() {
+          var index = Math.floor(Math.random() * playingDeck.cards.length)
+          var playingCard = playingDeck.cards[index];
+          return playingCard;
+        }
 
-				if (player1.rank > player2.rank) {
-					console.log("Matthew wins the round, and gets a point!");
-				} else if (player2.rank > player1.rank) {
-					console.log("Computer wins the round, and gets a point!");
-				} else {
-					console.log("It's a tie!");
-				}
-			}
-	}
-			
-	newGame = new PlayGame();
-	
+        if (player1.rank > player2.rank) {
+          console.log("Matthew wins the round, and gets a point!");
+        } else if (player2.rank > player1.rank) {
+          console.log("Computer wins the round, and gets a point!");
+        } else {
+          console.log("It's a tie!");
+        }
+      }
+        // pushes a player1 card to the beginning of queueDeck
+        function queueAdd() {
+          queueDeck.cards.unshift(player1.show());
+        }
+        // removes first player1 card from the queueDeck
+        function queueRemove() {
+          var retrievedCard = queueDeck.cards.pop(player1.show());
+          if (retrievedCard) {
+            console.log("Matthew's last card during the game: " + retrievedCard);
+          }
+          else {
+            console.log("QueueDeck is empty.");
+          }
+        }
+        // add one card, remove two to check if queueDeck is empty
+        queueAdd();
+        queueRemove();
+        queueRemove();
+  }
+
+  newGame = new PlayGame();
+
 </script>
